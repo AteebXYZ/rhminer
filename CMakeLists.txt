@@ -158,21 +158,18 @@ set(SOURCES
 set(Boost_USE_STATIC_LIBS   OFF)
 set(JSONCPP_LIB_BUILD_STATIC OFF)
 
-find_package(jsoncpp REQUIRED)
-include_directories(${JSONCPP_INCLUDE_DIRS})
-link_libraries(${JSONCPP_LIBRARIES})
+#find_package(jsoncpp REQUIRED)
+#include_directories(${JSONCPP_INCLUDE_DIRS})
+#link_libraries(${JSONCPP_LIBRARIES})
 
 cmake_policy(SET CMP0167 NEW)
 find_package( Boost REQUIRED COMPONENTS atomic chrono system thread )
 include_directories(${Boost_INCLUDE_DIR})
 link_libraries(${BOOST_LIBRARIES})
 
-# set(CMAKE_LIBRARY_PATH "/usr/lib")
-
-# message(STATUS ${LIBRARY_OUTPUT_DIRECTORY})
-
 
 set(PU_SPEC "cpu")
+
 
 
 #CHECK_INCLUDE_FILE (syslog.h HAVE_SYSLOG_H)
@@ -185,7 +182,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/rhminer_${RH_ARCH})
 message(STATUS "Output directory is ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
-# target_link_libraries(${PROJECT_NAME} -lstdc++)
-target_link_libraries(${PROJECT_NAME} ${RH_CUDA_LIB} ${LIBS} ${LIBRARIES} ${EXTRA_LIBS} jsoncpp ${CMAKE_DL_LIBS} Boost::atomic Boost::chrono Boost::system Boost::thread ${RH_OCLL})
+target_link_libraries(${PROJECT_NAME} ${RH_CUDA_LIB} ${LIBS} ${LIBRARIES} ${EXTRA_LIBS} ${CMAKE_SOURCE_DIR}/libs/libjsoncpp.so ${CMAKE_DL_LIBS} Boost::atomic Boost::chrono Boost::system Boost::thread ${RH_OCLL})
 
 
