@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 
 option(RH_DEBUG_TARGET "Compile in Debug" OFF)
-option(RH_CPU_ONLY "Compile only cpu code" OFF)
-option(RH_ARCH "Architecture name" Maxwell)
+option(RH_CPU_ONLY "Compile only cpu code" ON)
+option(RH_ARCH "Architecture name" CPU)
 option(RH_NO_SSE4 "Disable sse4 optimizations" OFF)
 
 project(rhminer)
@@ -17,7 +17,7 @@ if(RH_NO_SSE4)
 	add_definitions(-DRHMINER_NO_SSE4)
 else()
 	message(STATUS "ENABLING SSe4 intrinsics")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -msse4.1")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread -msse4.1")
 endif(RH_NO_SSE4)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake")
@@ -150,35 +150,42 @@ set(SOURCES
     rhminer/main.cpp
    )
    
+# find_package(jsoncpp REQUIRED)
+# include_directories(jsoncpp-1.8.0/include)
+# target_link_libraries(${PROJECT_NAME} jsoncpp)
+
+
+set(Boost_USE_STATIC_LIBS   OFF)
+set(JSONCPP_LIB_BUILD_STATIC OFF)
+
 find_package(jsoncpp REQUIRED)
 include_directories(${JSONCPP_INCLUDE_DIRS})
 link_libraries(${JSONCPP_LIBRARIES})
 
-set(Boost_USE_STATIC_LIBS   ON)
-set(JSONCPP_LIB_BUILD_STATIC ON)
-
+cmake_policy(SET CMP0167 NEW)
 find_package( Boost REQUIRED COMPONENTS atomic chrono system thread )
 include_directories(${Boost_INCLUDE_DIR})
 link_libraries(${BOOST_LIBRARIES})
 
+# set(CMAKE_LIBRARY_PATH "/usr/lib")
 
-if(RH_CPU_ONLY)
-    set(PU_SPEC "cpu")
-else(RH_CPU_ONLY)
-    set(RH_CUDA_LIB cudalib)
-    set(RH_OCLL OpenCL)
-    add_subdirectory(cudalib)
-endif(RH_CPU_ONLY)
+# message(STATUS ${LIBRARY_OUTPUT_DIRECTORY})
+
+
+set(PU_SPEC "cpu")
+
 
 #CHECK_INCLUDE_FILE (syslog.h HAVE_SYSLOG_H)
 #if (HAVE_SYSLOG_H)
 #    add_definitions(/DHAVE_SYSLOG_H)
 #endif()
+set(CMAKE_EXE_LINKER_FLAGS "-L/lib64/ -lstdc++")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/rhminer_${RH_ARCH})
 message(STATUS "Output directory is ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${RH_CUDA_LIB} ${LIBS} ${LIBRARIES} ${EXTRA_LIBS} jsoncpp_lib_static ${CMAKE_DL_LIBS} ${Boost_ATOMIC_LIBRARY} ${Boost_CHRONO_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${RH_OCLL})
+# target_link_libraries(${PROJECT_NAME} -lstdc++)
+target_link_libraries(${PROJECT_NAME} ${RH_CUDA_LIB} ${LIBS} ${LIBRARIES} ${EXTRA_LIBS} jsoncpp ${CMAKE_DL_LIBS} Boost::atomic Boost::chrono Boost::system Boost::thread ${RH_OCLL})
 
 
