@@ -1,4 +1,18 @@
-# This project is no longer supported
+# How to build
+## Linux
+
+```
+git clone https://github.com/AteebXYZ/rhminer
+cd rhminer
+cd build/rhminer
+cmake ../../
+make -j12
+```
+Binary should be available in the rhminer_CPU folder.
+
+## Any other OS
+Idk go figure that one out on your own 
+
 
 # rhminer 
 
