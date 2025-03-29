@@ -1,3 +1,6 @@
+# Note from AteebX
+I am in no means cabable of actually doing anything other than cleaning the project up right now so if there is an issue with the program itself it's likely I CANNOT help with that.
+
 # How to build
 ## Linux
 
@@ -5,14 +8,20 @@
 git clone https://github.com/AteebXYZ/rhminer
 cd rhminer
 cd build/rhminer
-cmake ../../
+cmake ../../ -DCMAKE_BUILD_TYPE=Release
 make -j12
 ```
 Binary should be available in the rhminer_CPU folder.
 
 ## Any other OS
-Idk go figure that one out on your own 
+Idk go figure that one out on your own for now.
 
+## TODO
+- [X] Make it buildable on linux with cmake.
+- [ ] Clean the project and make it buildable with cmake on windows mac and stabilise it on linux.
+- [ ] Remove all unnecessary GPU code.
+- [ ] MABYE optimize a few things here and there.
+- [ ] MABYE update all packages and dependencies to work with latest c++
 
 # rhminer 
 
@@ -230,16 +239,3 @@ Just sending empty string will return mining status in json format like that:
 }
 ```
 For more details and informations see https://github.com/polyminer1/rhminer/blob/master/Release/API.txt <br>
-
-## Developer Donation
-Default donation is 1%. <br>
-Donation is hardcoded in the binaries downloadable on gitgub. That is to recoup the 6 month it toke to R&D, develop, stabilize and optimize this miner and for the upcoming bug fixes and many upcoming optimizations. <br>
-To disable donation download and compile locally, then use the -devfee option with chosen donation percentage. 0 will disable the donation. <br>
-
-For direct donations:
-  * Pascal wallet 529692-23
-
-
-## Contacts
-Discord user ID : polyminer1#5755 <br>
- 
